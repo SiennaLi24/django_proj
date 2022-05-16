@@ -2,5 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('calculator/calculate', views.calculate)
+    path('calculate/', views.calculate),
+    path('', views.IndexView.as_view()),
+    path('foodtype/', views.foodType)
 ]
