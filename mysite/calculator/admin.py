@@ -5,15 +5,6 @@ admin.site.register(Type)
 
 
 
-"""class TypeInline(admin.TabularInline):
-    model = Type
-    extra = 3
-
-class AddCalAdmin(admin.ModelAdmin):
-
-    inlines = [TypeInline]
-
-admin.site.register(AddCal, AddCalAdmin)"""
 
 
 

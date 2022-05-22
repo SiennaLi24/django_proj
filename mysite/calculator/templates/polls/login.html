@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+   <title>Login</title>
+  </head>
+
+<body>
+
+  {% if user.is_authenticated %}
+
+    <h3>Welcome</h3>
+
+  {% else %}
+    <form method = 'post' action = "{% url 'login' %}">
+      {% csrf_token %}
+      <table>
+        {{ form }}
+      </table>
+      <!--<input type = "Textbox" name = "username" id = "username"/>
+      <input type = "Textbox" name = "email" id = "email"/>
+      <input type = "Textbox" name = "password" id = "password"/>-->
+      <button type = submit>Submit</button>
+    </form>
+  {% endif %}
+</html>
