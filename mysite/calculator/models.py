@@ -18,7 +18,8 @@ class Type(models.Model):
     foodRate = models.IntegerField(blank = True)
 
     def __str__(self):
-        return self.foodName
+        foodName = "Name: " + self.foodName + ", Type of Food: " + self.foodType + ", Rating: " + str(self.foodRate) + "stars out of 10"
+        return foodName
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

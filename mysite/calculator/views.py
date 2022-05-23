@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 
 class LogsView(View):
     template_name = 'polls/logs.html'
-    def get(self, request, username):
+    def post(self, request, username):
         if 'logout' in request.POST.keys():
             logout(request)
             form = AuthenticationForm()
@@ -20,6 +20,19 @@ class LogsView(View):
         'allTypes': allTypes
         }
         return render(request, 'polls/logs.html', context)
+    def get(self, request, username):
+        if request.user.is_authenticated:
+            if 'logout' in request.POST.keys():
+                logout(request)
+                form = AuthenticationForm()
+            allTypes = Type.objects.all()
+            context = {
+            'allTypes': allTypes
+            }
+            return render(request, 'polls/logs.html', context)
+        else:
+            pass
+
 
 class CreateRate(View):
     template_name = 'polls/createFoodPost.html'
@@ -28,15 +41,15 @@ class CreateRate(View):
             form = TypeForm(request.POST)
 
             if form.is_valid():
-                foodPost = form.save(commit = False)
-                foodPost.user = user
-                foodPost.save()
+                newPost = form.save(commit = False)
+                newPost.user = request.user
+                newPost.save()
 
                 return render(request, 'polls/createFoodPost.html', {'form':form})
-
+                
             else:
                 form = TypeForm()
-                return render(request, 'polls/createFoodPost.html', {'form':form})
+            return render(request, 'polls/createFoodPost.html', {'form':form})
 
 class IndexView(View):
     template_name = 'polls/logs.html'

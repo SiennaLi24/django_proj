@@ -16,7 +16,7 @@
     </li>
     {% endfor %}
   </ul>
-  <form method = 'post'>
+  <form method = 'post' action = "{% url 'login' %}">
     {% csrf_token %}
     <input type="hidden" name="logout" value="logout"></input>
     <button type = 'submit'>Logout</button>
