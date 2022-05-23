@@ -6,6 +6,7 @@ from .forms import TypeForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from pprint import pprint
 # Create your views here.
 
 
@@ -34,22 +35,41 @@ class LogsView(View):
             pass
 
 
+
+
 class CreateRate(View):
     template_name = 'polls/createFoodPost.html'
     def post(self, request, username):
-        if request.method == 'POST':
-            form = TypeForm(request.POST)
+        allTypes = Type.objects.all()
+        context = {
+            'allTypes':allTypes,
+        }
+        print(allTypes)
+        return render(request, 'polls/createFoodPost.html', context)
 
-            if form.is_valid():
-                newPost = form.save(commit = False)
-                newPost.user = request.user
-                newPost.save()
 
-                return render(request, 'polls/createFoodPost.html', {'form':form})
-                
-            else:
-                form = TypeForm()
-            return render(request, 'polls/createFoodPost.html', {'form':form})
+
+
+class SaveRate(View):
+    def post(self, request, username):
+        pprint(request.POST)
+        foodName = request.POST['foodName']
+        foodType = request.POST['foodType']
+        foodRate = request.POST['foodRate']
+        newPost = Type(foodName = foodName, foodType = foodType, foodRate = foodRate)
+
+        newPost.foodPost = request.user
+        newPost.save()
+        allTypes = Type.objects.all()
+        context = {
+            'allTypes':allTypes,
+        }
+
+        print("yes")
+        return render(request, 'polls/logs.html', context)
+
+
+
 
 class IndexView(View):
     template_name = 'polls/logs.html'

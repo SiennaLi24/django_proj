@@ -7,13 +7,8 @@ from django.contrib.auth.models import User
 
 
 class Type(models.Model):
-    types = [
-        ('d', 'dessert'),
-        ('m', 'main course'),
-        ('a', 'appetizer'),
-    ]
     foodPost = models.ForeignKey(User, related_name = 'foodPost', on_delete=models.CASCADE)
-    foodType = models.CharField(max_length = 50, choices = types, default='dessert')
+    foodType = models.CharField(max_length = 50, default='dessert')
     foodName = models.CharField(max_length=50)
     foodRate = models.IntegerField(blank = True)
 

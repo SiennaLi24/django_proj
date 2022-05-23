@@ -11,10 +11,18 @@
 <body>
   <h3>Create Rating</h3>
 
-  <form method = 'post' action="{% url 'logs' user.username %}">
+  <form method = 'post' action="{% url 'save' user.username %}">
     {% csrf_token %}
-
-    {{ form.as_p }}
+    <label for = 'foodName'>Name of Food</label>
+    <input type = 'text' id = 'foodName' name = 'foodName'>
+    <label for = 'foodType'>Type of Food</label>
+    <select name="foodType" id="foodType">
+      <option value="dessert">Dessert</option>
+      <option value="main course">Main Course</option>
+      <option value="appetizer">Appetizer</option>
+    </select>
+    <label for = 'foodRate'>Rating</label>
+    <input type = 'number' id = 'foodRate' name = 'foodRate'>
     <div class = "field">
       <div class = "control">
         <button type = 'submit'>Submit New Rating</button>
