@@ -12,6 +12,8 @@
   <ul> {% for food in allTypes %}
     <li>
       {{food.foodName}}
+    </li>
+    <li>
       {{food.foodRate}}
     </li>
     {% endfor %}
@@ -25,7 +27,10 @@
     {% csrf_token %}
     <button type = 'submit'>Create New Review</button>
   </form>
-  <!--^not working yet-->
+  <form method = 'post' action = "{% url 'profile' user.username %}">
+    {% csrf_token %}
+    <button type = 'submit'>Profile</button>
+  </form>
 </body>
 
 </html>
