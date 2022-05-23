@@ -1,23 +1,27 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
 
-class TotalToday(models.Model):
-    name = models.CharField(max_length=50)
-    def __str__(self):
-        return self.name
 
 
 class Type(models.Model):
     types = [
-        ('p', 'protein'),
-        ('c', 'carbohydrates'),
-        ('l', 'lipids'),
+        ('d', 'dessert'),
+        ('m', 'main course'),
+        ('a', 'appetizer'),
     ]
-    name = models.CharField(max_length = 13, choices = types, default='protein')
-    foodType = models.CharField(max_length=50)
-    totalCal = models.IntegerField(blank=True)
+    foodPost = models.ForeignKey(User, related_name = 'foodPost', on_delete=models.CASCADE)
+    foodType = models.CharField(max_length = 50, choices = types, default='dessert')
+    foodName = models.CharField(max_length=50)
+    foodRate = models.IntegerField(blank = True)
 
     def __str__(self):
-        return self.foodType
+        return self.foodName
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username

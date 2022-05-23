@@ -13,6 +13,15 @@
   {% if user.is_authenticated %}
 
     <h3>Welcome</h3>
+    <form method = 'post'>
+      {% csrf_token %}
+      <input type = "hidden" name = "logout" value = "logout"></input>
+      <button type = "submit">Logout</button>
+    </form>
+
+    <a href = "{% url 'logs' user.username %}">
+      <button type = "submit">Continue Logging</button>
+    </a>
 
   {% else %}
     <form method = 'post' action = "{% url 'login' %}">
@@ -20,10 +29,14 @@
       <table>
         {{ form }}
       </table>
-      <!--<input type = "Textbox" name = "username" id = "username"/>
-      <input type = "Textbox" name = "email" id = "email"/>
-      <input type = "Textbox" name = "password" id = "password"/>-->
       <button type = submit>Submit</button>
     </form>
   {% endif %}
+  <ul> {% for food in allTypes %}
+    <li>
+      {{food.foodName}}
+      {{food.foodRate}}
+    </li>
+    {% endfor %}
+  </ul>
 </html>

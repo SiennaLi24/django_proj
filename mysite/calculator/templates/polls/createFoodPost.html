@@ -5,27 +5,22 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-   <title>Calculator</title>
+   <title>Profile</title>
   </head>
 
 <body>
-  <ul> {% for food in allTypes %}
-    <li>
-      {{food.foodName}}
-      {{food.foodRate}}
-    </li>
-    {% endfor %}
-  </ul>
-  <form method = 'post'>
+  <h3>Create Rating</h3>
+
+  <form method = 'post' action="{% url 'logs' user.username %}">
     {% csrf_token %}
-    <input type="hidden" name="logout" value="logout"></input>
-    <button type = 'submit'>Logout</button>
+
+    {{ form.as_p }}
+    <div class = "field">
+      <div class = "control">
+        <button type = 'submit'>Submit New Rating</button>
+      </div>
+    </div>
   </form>
-  <form method = 'post' action = "{% url 'create' user.username %}">
-    {% csrf_token %}
-    <button type = 'submit'>Create New Review</button>
-  </form>
-  <!--^not working yet-->
 </body>
 
 </html>
