@@ -17,8 +17,7 @@ class Type(models.Model):
         return foodName
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key = True)
 #    image = models.ImageField(default = 'default.jpg')
     location = models.CharField(max_length=100)
     qualifications = models.TextField()
-    

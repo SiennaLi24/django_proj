@@ -7,5 +7,5 @@ urlpatterns = [
     path('create/<str:username>', views.CreateRate.as_view(), name = 'create'),
     path('create/<str:username>/rate', views.SaveRate.as_view(), name = 'save'),
     path('profile/<str:username>', views.ProfileView.as_view(), name = 'profile'),
-    #path('profile/<str:username>/edit', views.ProfileView.as_view(), name = 'edit'),
+    path('profile/<str:username>/edit', views.EditView.as_view(), name = 'edit'),
 ]

@@ -1,7 +1,8 @@
 from django import forms
-from .models import Type
+from .models import UserProfile
 
-class TypeForm(forms.ModelForm):
+class UpdateProfileForm(forms.ModelForm):
+
     class Meta:
-        model = Type
-        fields = ['foodName', 'foodType', 'foodRate']
+        model = UserProfile
+        fields = ['location','qualifications']
