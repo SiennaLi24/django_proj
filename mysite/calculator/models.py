@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
+from django.utils import timezone
 
 # Create your models here.
 
@@ -19,6 +21,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Type, on_delete=models.CASCADE)
     ratePost = models.IntegerField()
     comment = models.TextField()
+    pub_date = models.DateTimeField('date published')
 
     def __str__(self):
          return self.comment

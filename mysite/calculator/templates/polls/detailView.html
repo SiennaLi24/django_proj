@@ -10,7 +10,7 @@
 
 <body>
   <h1>Food Post</h1>
-  <form method = 'post' action = "{% url 'logs' user.username %}">
+  <form method = 'post' action = "{% url 'detail' type.id %}">
     {% csrf_token %}
     <ul>
       <li>
@@ -23,16 +23,29 @@
         {{type.foodRate}}
       </li>
       <li>
-        <label for="comment">Comment:</label><br>
-        <input type="text" id="comment" name="comment">
-      </li>
-      <li>
+        {{ form.as_p }}
+        <br>
         <button type = 'submit'>Comment</button>
       </li>
-      <li>
-        <button type = 'submit'>Back</button>
-      </li>
+      {% for comment in postComments %}
+        <!-- <li>
+          {{comment.user}}
+        </li> -->
+        <li>
+          {{comment.ratePost}}
+        </li>
+        <li>
+          {{comment.comment}}
+        </li>
+        <li>
+          {{comment.pub_date}}
+      {% endfor %}
     </ul>
+
+  </form>
+  <form method = 'post' action = "{% url 'logs' user.username %}">
+    {% csrf_token %}
+    <button type = 'submit'>Back</button>
   </form>
 </body>
 

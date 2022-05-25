@@ -1,23 +1,52 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
-from .models import Type, UserProfile
+from .models import Type, UserProfile, Comment
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from pprint import pprint
 from .forms import UpdateProfileForm, CommentForm
 from django import forms
+import datetime
+from django.utils import timezone
 # Create your views here.
 
 class DetailView(View):
-    print("1")
+    print("1a")
     template_name = 'polls/detailView.html'
     def post(self, request, type_id):
-        print("2")
-        type = get_object_or_404(Type, pk=type_id)
+        print("2a")
+        postComments = Comment.objects.filter(post = type_id)
+        type = get_object_or_404(Type, pk = type_id)
+        if request.method == 'POST':
+            form = CommentForm(request.POST)
+            print("3a")
+            context = {
+                'form':form,
+                'postComments':postComments,
+                'type':type,
+            }
+            if form.is_valid():
+                print("4a")
+                ratePost = form.cleaned_data['ratePost']
+                comment = form.cleaned_data['comment']
+                newComment = Comment(ratePost = ratePost, comment = comment, pub_date=timezone.now())
+                newComment.post = type
+                print(type)
+                newComment.save()
+                print(comment)
+                newPostComments = Comment.objects.filter(post = type_id)
+                print(newPostComments)
+                context['postComments'] = newPostComments
+
+            return render(request, 'polls/detailView.html', context)
+        else:
+            form = CommentForm()
         context = {
+            'form':form,
             'type':type,
+            'postComments':postComments,
         }
         return render(request, 'polls/detailView.html', context)
 
