@@ -10,7 +10,7 @@
 
 <body>
   <h3>User Profile for {{user.username}}</h3>
-  {% if exist %}
+  {% if exist or submitted %}
     <ul>
       <li>
         <h5>User</h5>
@@ -29,7 +29,20 @@
           {% csrf_token %}
           <button type = 'submit'>Edit Profile</button>
         </form>
+        <form method = 'post' action = "{% url 'logs' user.username %}">
+          {% csrf_token %}
+          <button type = 'submit'>Return To Homepage</button>
+        </form
       </li>
+      {% for types in userTypes %}
+        <li>
+          {{types.foodName}}
+          {{types.foodRate}}
+
+        </li>
+      {% endfor %}
+
+
     </ul>
 
   {% else %}

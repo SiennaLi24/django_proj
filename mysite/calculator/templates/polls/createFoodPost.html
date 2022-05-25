@@ -29,6 +29,10 @@
       </div>
     </div>
   </form>
+  <form method = 'post' action = "{% url 'logs' user.username %}">
+    {% csrf_token %}
+    <button type = 'submit'>Back</button>
+  </form>
 </body>
 
 </html>

@@ -53,25 +53,35 @@ class ProfileView(View):
     def post(self, request, username):
         user = User.objects.get(username = username)
         exist = True
+        userTypes = Type.objects.filter(foodPost = user)
         try:
-            userProfile = UserProfile.objects.get(user = user)
-        except:
+            userProfile = UserProfile.objects.get(user=user)
+            print("1")
+        except UserProfile.DoesNotExist:
+            print("2")
             exist = False
             form = UpdateProfileForm(request.POST)
+            context = {
+                'exist':exist,
+                'form':form,
+                'userTypes':userTypes,
+            }
             if form.is_valid():
+                print("3")
+                exist = True
                 location = form.cleaned_data['location']
                 qualifications = form.cleaned_data['qualifications']
                 userProfile = UserProfile(location = location, qualifications = qualifications)
                 userProfile.user = request.user
                 userProfile.save()
-            context = {
-                'exist':exist,
-                'form':form,
-            }
+                context["userProfile"] = userProfile
+                context["exist"] = True
+
             return render(request, 'polls/profile.html', context)
-        print(exist)
+        print("4")
         context = {
             'exist':exist,
+            'userTypes':userTypes,
             'userProfile':userProfile,
         }
         return render(request, 'polls/profile.html', context)

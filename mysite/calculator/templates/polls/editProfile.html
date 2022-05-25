@@ -9,6 +9,7 @@
   </head>
 
 <body>
+  <h1>Edit Profile</h1>
   <form method = 'post' action="{% url 'edit' user.username %}">
     {% csrf_token %}
     {{ form.as_p }}
@@ -17,7 +18,12 @@
     </div>
 
   </form>
-
+  <form method = 'post' action="{% url 'profile' user.username %}">
+    {% csrf_token %}
+    <div class = "control">
+      <button type = 'submit'>Back</button>
+    </div>
+  </form>
 </body>
 
 </html>
