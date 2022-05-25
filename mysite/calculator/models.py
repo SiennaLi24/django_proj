@@ -4,10 +4,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-# class Comment(models.Model):
-#     ratePost = models.IntegerField()
-#     comment = models.TextField()
-
 class Type(models.Model):
     foodPost = models.ForeignKey(User, related_name = 'foodPost', on_delete=models.CASCADE)
     foodType = models.CharField(max_length = 50, default='dessert')
@@ -17,6 +13,15 @@ class Type(models.Model):
     def __str__(self):
         foodName = "Name: " + self.foodName + ", Type of Food: " + self.foodType + ", Rating: " + str(self.foodRate) + "stars out of 10"
         return foodName
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Type, on_delete=models.CASCADE)
+    ratePost = models.IntegerField()
+    comment = models.TextField()
+
+    def __str__(self):
+         return self.comment
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key = True)

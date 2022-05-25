@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views import View
 from .models import Type, UserProfile
@@ -6,11 +6,20 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from pprint import pprint
-from .forms import UpdateProfileForm
+from .forms import UpdateProfileForm, CommentForm
 from django import forms
-#from .forms import UpdateProfileForm
 # Create your views here.
 
+class DetailView(View):
+    print("1")
+    template_name = 'polls/detailView.html'
+    def post(self, request, type_id):
+        print("2")
+        type = get_object_or_404(Type, pk=type_id)
+        context = {
+            'type':type,
+        }
+        return render(request, 'polls/detailView.html', context)
 
 class EditView(View):
     template_name = 'polls/editProfile.html'
@@ -85,28 +94,7 @@ class ProfileView(View):
             'userProfile':userProfile,
         }
         return render(request, 'polls/profile.html', context)
-    #def post(self, request, username):
-    #    user = User.objects.get(username = username)
-    #    exist = True
-    #    try:
-    #        userProfile = UserProfile.objects.get(user = user)
-    #    except:
-    #        exist = False
-    #        if "location" in request.POST.keys():
-    #            pprint(request.POST)
-    #            location = request.POST['location']
-    #            qualifications = request.POST['qualifications']
-    #            newProfile = UserProfile(user = user, location = location, qualifications = qualifications)
-    #            newProfile.user = request.user
-    #            newProfile.save()
-    #        return render(request, 'polls/profile.html', { 'exist':exist })
-    #    print(exist)
-    #    context = {
-    #        'exist':exist,
-    #        'userProfile':userProfile,
-    #    }
-    #    return render(request, 'polls/profile.html', context)
-    #def get (if user is not none/if user is not the logged in user)
+
 
 class LogsView(View):
     template_name = 'polls/logs.html'

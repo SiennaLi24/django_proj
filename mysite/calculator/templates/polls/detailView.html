@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+   <title>Post Details</title>
+  </head>
+
+<body>
+  <h1>Food Post</h1>
+  <form method = 'post' action = "{% url 'logs' user.username %}">
+    {% csrf_token %}
+    <ul>
+      <li>
+        {{type.foodName}}
+      </li>
+      <li>
+        {{type.foodType}}
+      </li>
+      <li>
+        {{type.foodRate}}
+      </li>
+      <li>
+        <label for="comment">Comment:</label><br>
+        <input type="text" id="comment" name="comment">
+      </li>
+      <li>
+        <button type = 'submit'>Comment</button>
+      </li>
+      <li>
+        <button type = 'submit'>Back</button>
+      </li>
+    </ul>
+  </form>
+</body>
+
+</html>
