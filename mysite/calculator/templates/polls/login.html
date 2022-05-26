@@ -31,6 +31,9 @@
       </table>
       <button type = "submit">Submit</button>
     </form>
+
+    <p>If you don't have an account, click </p>
+    <a href = "{% url 'register' %}">here</a>
   {% endif %}
   <ul> {% for food in allTypes %}
     <li>

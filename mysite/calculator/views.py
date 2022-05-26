@@ -6,13 +6,48 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from pprint import pprint
-from .forms import UpdateProfileForm, CommentForm
+from .forms import UpdateProfileForm, CommentForm, RegistrationForm
 from django import forms
 import datetime
 from django.utils import timezone
+from django.contrib import messages
 # Create your views here.
 
-
+class RegisterView(View):
+    template_name = 'poll/register.html'
+    def get(self, request):
+        allTypes = Type.objects.all()
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful." )
+            context = {
+                'allTypes':allTypes
+            }
+            return render(request, "polls/logs.html", context)
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+        form = RegistrationForm()
+        context = {
+            'form':form,
+        }
+        return render (request, "polls/register.html", context)
+    def post(self, request):
+        allTypes = Type.objects.all()
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful." )
+            context = {
+                'allTypes':allTypes
+            }
+            return render(request, "polls/logs.html", context)
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+        form = RegistrationForm()
+        context = {
+            'form':form,
+        }
 class DeletePost(View):
     template_name = 'poll/editPost.html'
     def post(self, request, type_id, username):

@@ -12,5 +12,6 @@ urlpatterns = [
     path('profile/<str:username>/<int:type_id>', views.ViewPost.as_view(), name = 'viewPost'),
     path('profile/<str:username>/<int:type_id>/edit', views.EditPost.as_view(), name = 'ePost'),
     path('post/<int:type_id>/detail/<str:foodPost>', views.UserView.as_view(), name = 'userView'),
-    path('profile/<str:username>/<int:type_id>/edit/delete', views.DeletePost.as_view(), name = 'deletePost')
+    path('profile/<str:username>/<int:type_id>/edit/delete', views.DeletePost.as_view(), name = 'deletePost'),
+    path('register/', views.RegisterView.as_view(), name = 'register'),
 ]
