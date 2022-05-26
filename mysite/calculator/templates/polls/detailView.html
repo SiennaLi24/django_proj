@@ -23,14 +23,14 @@
         {{type.foodRate}}
       </li>
       <li>
+        {{type.foodComment}}
+      </li>
+      <li>
         {{ form.as_p }}
         <br>
         <button type = 'submit'>Comment</button>
       </li>
       {% for comment in postComments %}
-        <!-- <li>
-          {{comment.user}}
-        </li> -->
         <li>
           {{comment.ratePost}}
         </li>

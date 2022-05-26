@@ -167,7 +167,8 @@ class SaveRate(View):
         foodName = request.POST['foodName']
         foodType = request.POST['foodType']
         foodRate = request.POST['foodRate']
-        newPost = Type(foodName = foodName, foodType = foodType, foodRate = foodRate)
+        foodComment = request.POST['foodComment']
+        newPost = Type(foodName = foodName, foodType = foodType, foodRate = foodRate, foodComment = foodComment)
 
         newPost.foodPost = request.user
         newPost.save()
