@@ -44,6 +44,10 @@
       </div>
     </div>
   </form>
+  <form method = 'post' action = "{% url 'deletePost' user.username type.id %}">
+    {% csrf_token %}
+    <button type = 'submit' class="btn btn-danger">Delete</button>
+  </form>
   <form method = 'post' action = "{% url 'profile' user.username %}">
     {% csrf_token %}
     <button type = 'submit'>Back</button>

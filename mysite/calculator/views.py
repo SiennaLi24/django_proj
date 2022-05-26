@@ -12,6 +12,25 @@ import datetime
 from django.utils import timezone
 # Create your views here.
 
+
+class DeletePost(View):
+    template_name = 'poll/editPost.html'
+    def post(self, request, type_id, username):
+        type = get_object_or_404(Type, pk = type_id)
+        user = User.objects.get(username = username)
+        userProfile = UserProfile.objects.get(user = user)
+        exist = True
+        object = Type.objects.get(pk = type_id)
+        object.delete()
+        userTypes = Type.objects.filter(foodPost = user)
+        print(userTypes)
+        context = {
+            'userProfile':userProfile,
+            'exist':exist,
+            'userTypes':userTypes,
+        }
+        return render(request, 'polls/profile.html', context)
+
 class UserView(View):
     template_name = 'polls/userView.html'
     def post(self, request, foodPost, type_id):
