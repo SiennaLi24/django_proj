@@ -11,7 +11,36 @@ from django import forms
 import datetime
 from django.utils import timezone
 # Create your views here.
+class ViewPost(View):
+    template_name = 'polls/editPost.html'
+    def post(self, request, username, type_id):
+        type = get_object_or_404(Type, pk = type_id)
+        context = {
+            'type':type,
+        }
+        return render(request, 'polls/editPost.html', context)
 
+class EditPost(View):
+
+    def post(self, request, username, type_id):
+        type = get_object_or_404(Type, pk = type_id)
+        exist = True
+        user = User.objects.get(username = username)
+        userProfile = UserProfile.objects.get(user = user)
+        userTypes = Type.objects.filter(foodPost = user)
+        type.foodName = request.POST['foodName']
+        type.foodType = request.POST['foodType']
+        type.foodRate = request.POST['foodRate']
+        type.foodComment = request.POST['foodComment']
+        type.save()
+        context = {
+            'type':type,
+            'userProfile':userProfile,
+            'userTypes':userTypes,
+            'exist':exist,
+        }
+
+        return render(request, "polls/profile.html", context)
 class DetailView(View):
     print("1a")
     template_name = 'polls/detailView.html'
@@ -59,7 +88,7 @@ class EditView(View):
         print(userProfile.location)
         if request.method == 'POST':
             form = UpdateProfileForm(request.POST)
-            print("here")
+            print(userProfile)
             if form.is_valid():
                 print("yes")
                 location = form.cleaned_data['location']
@@ -75,10 +104,7 @@ class EditView(View):
                 return render(request, 'polls/logs.html', context)
         else:
             form = UpdateProfileForm()
-        #edittedProfile = UserProfile(user = user, location = location, qualifications = qualifications)
-        #userProfile.location = request.POST['location']
-        #userProfile.qualifications = request.POST['qualifications']
-    #    userProfile.save()
+
         context = {
             'form':form,
             'userProfile':userProfile,
