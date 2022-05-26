@@ -19,9 +19,10 @@
       <button type = "submit">Logout</button>
     </form>
 
-    <a href = "{% url 'logs' user.username %}">
+    <form method = 'post' action = "{% url 'logs' user.username %}">
+      {% csrf_token %}
       <button type = "submit">Continue Logging</button>
-    </a>
+    </form>
 
   {% else %}
     <form method = 'post' action = "{% url 'login' %}">
@@ -32,8 +33,7 @@
       <button type = "submit">Submit</button>
     </form>
 
-    <p>If you don't have an account, click </p>
-    <a href = "{% url 'register' %}">here</a>
+    <p>If you don't have an account, click, <a href = "{% url 'register' %}">here</a> </p>
   {% endif %}
   <ul> {% for food in allTypes %}
     <li>

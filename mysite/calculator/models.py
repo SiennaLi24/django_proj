@@ -70,6 +70,5 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         primary_key = True
     )
-#    image = models.ImageField(default = 'default.jpg')
     location = models.CharField(max_length=100)
     qualifications = models.TextField()

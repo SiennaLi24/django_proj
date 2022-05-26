@@ -12,9 +12,8 @@ import datetime
 from django.utils import timezone
 from django.contrib import messages
 # Create your views here.
-
+#ask about instance
 class RegisterView(View):
-    template_name = 'poll/register.html'
     def get(self, request):
         allTypes = Type.objects.all()
         form = RegistrationForm(request.POST)
@@ -27,11 +26,13 @@ class RegisterView(View):
             }
             return render(request, "polls/logs.html", context)
         messages.error(request, "Unsuccessful registration. Invalid information.")
+        print("1")
         form = RegistrationForm()
         context = {
             'form':form,
         }
-        return render (request, "polls/register.html", context)
+        return render(request, "polls/register.html", context)
+
     def post(self, request):
         allTypes = Type.objects.all()
         form = RegistrationForm(request.POST)
@@ -48,8 +49,11 @@ class RegisterView(View):
         context = {
             'form':form,
         }
+        return render(request, "polls/register.html", context)
 class DeletePost(View):
-    template_name = 'poll/editPost.html'
+    def get(self, request, type_id, username):
+        return render(request, 'polls/unauthorized.html')
+
     def post(self, request, type_id, username):
         type = get_object_or_404(Type, pk = type_id)
         user = User.objects.get(username = username)
@@ -67,7 +71,8 @@ class DeletePost(View):
         return render(request, 'polls/profile.html', context)
 
 class UserView(View):
-    template_name = 'polls/userView.html'
+    def get(self, request, type_id, foodPost):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, foodPost, type_id):
         user = User.objects.get(username = foodPost)
         type = get_object_or_404(Type, pk = type_id)
@@ -82,7 +87,8 @@ class UserView(View):
         return render(request, 'polls/userView.html', context)
 
 class ViewPost(View):
-    template_name = 'polls/editPost.html'
+    def get(self, request, type_id, username):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, username, type_id):
         type = get_object_or_404(Type, pk = type_id)
         context = {
@@ -91,7 +97,8 @@ class ViewPost(View):
         return render(request, 'polls/editPost.html', context)
 
 class EditPost(View):
-
+    def get(self, request, type_id, username):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, username, type_id):
         type = get_object_or_404(Type, pk = type_id)
         exist = True
@@ -113,7 +120,8 @@ class EditPost(View):
         return render(request, "polls/profile.html", context)
 class DetailView(View):
     print("1a")
-    template_name = 'polls/detailView.html'
+    def get(self, request, type_id):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, type_id):
         print("2a")
         postComments = Comment.objects.filter(post = type_id)
@@ -150,7 +158,8 @@ class DetailView(View):
         return render(request, 'polls/detailView.html', context)
 
 class EditView(View):
-    template_name = 'polls/editProfile.html'
+    def get(self, request, username):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, username):
         allTypes = Type.objects.all()
         user = User.objects.get(username = username)
@@ -184,6 +193,8 @@ class EditView(View):
 
 
 class ProfileView(View):
+    def get(self, request, username):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, username):
         user = User.objects.get(username = username)
         exist = True
@@ -222,7 +233,6 @@ class ProfileView(View):
 
 
 class LogsView(View):
-    template_name = 'polls/logs.html'
     def post(self, request, username):
         if 'logout' in request.POST.keys():
             logout(request)
@@ -233,21 +243,23 @@ class LogsView(View):
         }
         return render(request, 'polls/logs.html', context)
     def get(self, request, username):
-        if request.user.is_authenticated:
-            if 'logout' in request.POST.keys():
-                logout(request)
-                form = AuthenticationForm()
-            allTypes = Type.objects.all()
-            context = {
-            'allTypes': allTypes
-            }
-            return render(request, 'polls/logs.html', context)
-        else:
-            pass
+        return render(request, 'polls/unauthorized.html')
+        # if request.user.is_authenticated:
+        #     if 'logout' in request.POST.keys():
+        #         logout(request)
+        #         form = AuthenticationForm()
+        #     allTypes = Type.objects.all()
+        #     context = {
+        #     'allTypes': allTypes
+        #     }
+        #     return render(request, 'polls/logs.html', context)
+        # else:
+        #     pass
 
 
 class CreateRate(View):
-    template_name = 'polls/createFoodPost.html'
+    def get(self, request, username):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, username):
         allTypes = Type.objects.all()
         context = {
@@ -258,6 +270,8 @@ class CreateRate(View):
 
 
 class SaveRate(View):
+    def get(self, request, username):
+        return render(request, 'polls/unauthorized.html')
     def post(self, request, username):
         pprint(request.POST)
         foodName = request.POST['foodName']
@@ -277,7 +291,6 @@ class SaveRate(View):
 
 
 class IndexView(View):
-    template_name = 'polls/logs.html'
     def get(self, request):
         form = AuthenticationForm()
         allTypes = Type.objects.all()

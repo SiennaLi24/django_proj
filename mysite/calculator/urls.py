@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('', views.IndexView.as_view(), name = 'login'),
@@ -15,3 +17,5 @@ urlpatterns = [
     path('profile/<str:username>/<int:type_id>/edit/delete', views.DeletePost.as_view(), name = 'deletePost'),
     path('register/', views.RegisterView.as_view(), name = 'register'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
