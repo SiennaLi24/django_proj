@@ -13,9 +13,9 @@
   {% if exist or submitted %}
   <h5>User</h5>
     <ul>
-      <!-- <li>
-        <img src={{userProfile.upload}} />
-      </li> -->
+      <li>
+        <img class="rounded-circle account-img" src="{{ userProfile.image.url }}">
+      </li>
       <li>
         {{userProfile.user}}
       </li>

@@ -64,11 +64,14 @@ class Comment(models.Model):
     def __str__(self):
          return self.comment
 
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         primary_key = True
     )
+    image = models.ImageField(default='profile_pics/profile.jpg', upload_to='profile_pics')
     location = models.CharField(max_length=100)
     qualifications = models.TextField()
