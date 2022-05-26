@@ -166,14 +166,16 @@ class EditView(View):
         userProfile = UserProfile.objects.get(user = user)
         print(userProfile.location)
         if request.method == 'POST':
-            form = UpdateProfileForm(request.POST)
+            form = UpdateProfileForm(request.POST, instance = userProfile)
             print(userProfile)
             if form.is_valid():
                 print("yes")
                 location = form.cleaned_data['location']
                 qualifications = form.cleaned_data['qualifications']
+                image = request.FILES['image']
                 userProfile.location = location
                 userProfile.qualifications = qualifications
+                userProfile.image = image
                 userProfile.save()
                 context = {
                     'form':form,
@@ -244,17 +246,6 @@ class LogsView(View):
         return render(request, 'polls/logs.html', context)
     def get(self, request, username):
         return render(request, 'polls/unauthorized.html')
-        # if request.user.is_authenticated:
-        #     if 'logout' in request.POST.keys():
-        #         logout(request)
-        #         form = AuthenticationForm()
-        #     allTypes = Type.objects.all()
-        #     context = {
-        #     'allTypes': allTypes
-        #     }
-        #     return render(request, 'polls/logs.html', context)
-        # else:
-        #     pass
 
 
 class CreateRate(View):

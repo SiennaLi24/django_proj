@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 from django.utils import timezone
+from PIL import Image
 
 # Create your models here.
 
@@ -58,7 +59,7 @@ class Comment(models.Model):
         choices = STAR_CHOICES,
         default = ONE
     )
-    comment = models.TextField()
+    comment = models.TextField(default = "")
     pub_date = models.DateTimeField('date published')
 
     def __str__(self):
@@ -72,6 +73,14 @@ class UserProfile(models.Model):
         on_delete=models.CASCADE,
         primary_key = True
     )
-    image = models.ImageField(default='profile_pics/profile.jpg', upload_to='profile_pics')
-    location = models.CharField(max_length=100)
-    qualifications = models.TextField()
+    image = models.ImageField(default='profile_pics/profile.jpeg', upload_to='profile_pics')
+    location = models.CharField(max_length=100, default = "")
+    qualifications = models.TextField(default = "")
+    def save(self):
+            super().save()
+            img = Image.open(self.image.path)
+
+            if img.height > 300 or img.width > 300:
+                output_size = (300, 300)
+                img.thumbnail(output_size)
+                img.save(self.image.path)

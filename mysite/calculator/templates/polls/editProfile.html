@@ -10,7 +10,7 @@
 
 <body>
   <h1>Edit Profile</h1>
-  <form method = 'post' action="{% url 'edit' user.username %}">
+  <form method = 'post' action="{% url 'edit' user.username %}" enctype ="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <div class = "control">

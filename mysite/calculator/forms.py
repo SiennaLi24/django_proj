@@ -7,7 +7,7 @@ class UpdateProfileForm(forms.ModelForm):
 
     class Meta:
         model = UserProfile
-        fields = ['location','qualifications']
+        fields = ['location','qualifications', 'image']
 
 class CommentForm(forms.ModelForm):
     class Meta:
