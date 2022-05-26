@@ -10,6 +10,10 @@
 
 <body>
   <h1>Food Post</h1>
+  <form method = 'post' action = "{% url 'userView' type.id type.foodPost %}">
+    {% csrf_token %}
+    <button type = 'submit'>{{type.foodPost}}</button>
+  </form>
   <form method = 'post' action = "{% url 'detail' type.id %}">
     {% csrf_token %}
     <ul>

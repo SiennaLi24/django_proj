@@ -11,6 +11,22 @@ from django import forms
 import datetime
 from django.utils import timezone
 # Create your views here.
+
+class UserView(View):
+    template_name = 'polls/userView.html'
+    def post(self, request, foodPost, type_id):
+        user = User.objects.get(username = foodPost)
+        type = get_object_or_404(Type, pk = type_id)
+        otherTypes = Type.objects.filter(foodPost = user)
+        otherProfile = UserProfile.objects.get(user = user)
+        context = {
+            'otherTypes':otherTypes,
+            'foodPost':foodPost,
+            'otherProfile':otherProfile,
+            'type':type,
+        }
+        return render(request, 'polls/userView.html', context)
+
 class ViewPost(View):
     template_name = 'polls/editPost.html'
     def post(self, request, username, type_id):
@@ -195,7 +211,6 @@ class SaveRate(View):
         foodRate = request.POST['foodRate']
         foodComment = request.POST['foodComment']
         newPost = Type(foodName = foodName, foodType = foodType, foodRate = foodRate, foodComment = foodComment)
-
         newPost.foodPost = request.user
         newPost.save()
         allTypes = Type.objects.all()
@@ -203,7 +218,7 @@ class SaveRate(View):
             'allTypes':allTypes,
         }
 
-        print("yes")
+        print(newPost.foodPost)
         return render(request, 'polls/logs.html', context)
 
 

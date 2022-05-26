@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+   <title>Profile</title>
+  </head>
+
+<body>
+  <h3>User Profile for {{type.foodPost}}</h3>
+  <ul>
+    <li>
+      <h5>User</h5>
+      {{otherProfile.user}}
+    </li>
+    <li>
+      <h5>Location</h5>
+      {{otherProfile.location}}
+    </li>
+    <li>
+      <h5>Qualifications</h5>
+      {{otherProfile.qualifications}}
+    </li>
+    <li>
+
+      <form method = 'post' action = "{% url 'logs' user.username %}">
+        {% csrf_token %}
+        <button type = 'submit'>Return To Homepage</button>
+      </form>
+    </li>
+    {% for type in otherTypes %}
+      <li>
+        {{type.foodName}}
+        {{type.foodRate}}
+
+
+      </li>
+    {% endfor %}
+
+
+  </ul>
+
+
+
+</body>
+
+</html>
