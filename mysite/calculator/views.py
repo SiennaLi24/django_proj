@@ -6,11 +6,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from pprint import pprint
-from .forms import UpdateProfileForm, CommentForm, RegistrationForm
+from .forms import UpdateProfileForm, CommentForm, RegistrationForm, CreatePostForm
 from django import forms
 import datetime
 from django.utils import timezone
 from django.contrib import messages
+from PIL import Image
 # Create your views here.
 #ask about instance
 class RegisterView(View):
@@ -91,8 +92,11 @@ class ViewPost(View):
         return render(request, 'polls/unauthorized.html')
     def post(self, request, username, type_id):
         type = get_object_or_404(Type, pk = type_id)
+        user = User.objects.get(username = username)
+        form = CreatePostForm(request.POST, request.FILES)
         context = {
             'type':type,
+            'form':form,
         }
         return render(request, 'polls/editPost.html', context)
 
@@ -104,20 +108,43 @@ class EditPost(View):
         exist = True
         user = User.objects.get(username = username)
         userProfile = UserProfile.objects.get(user = user)
-        userTypes = Type.objects.filter(foodPost = user)
-        type.foodName = request.POST['foodName']
-        type.foodType = request.POST['foodType']
-        type.foodRate = request.POST['foodRate']
-        type.foodComment = request.POST['foodComment']
-        type.save()
-        context = {
-            'type':type,
-            'userProfile':userProfile,
-            'userTypes':userTypes,
-            'exist':exist,
-        }
+        if request.method == 'POST':
+            form = CreatePostForm(request.POST, request.FILES, instance = type)
+            if form.is_valid():
+                form.save()
+                foodName = form.cleaned_data['foodName']
+                foodType = form.cleaned_data['foodType']
+                foodRate = form.cleaned_data['foodRate']
+                foodComment = form.cleaned_data['foodComment']
+                foodImage = request.FILES['foodImage']
+                type.foodName = foodName
+                type.foodType = foodType
+                type.foodRate = foodRate
+                type.foodImage = foodImage
+                type.save()
+            allTypes = Type.objects.all()
+            context = {
+                'form':form,
+                'userProfile':userProfile,
+                'allTypes':allTypes,
+                'exist':exist,
+                'type':type,
+            }
+            return render(request, 'polls/logs.html', context)
+        else:
+            form = CreatePostForm()
 
-        return render(request, "polls/profile.html", context)
+        context = {
+            'form':form,
+            'userProfile':userProfile,
+            'allTypes':allTypes,
+            'exist':exist,
+            'type':type,
+        }
+        return render(request, 'polls/editProfile.html', context)
+
+
+
 class DetailView(View):
     print("1a")
     def get(self, request, type_id):
@@ -166,10 +193,11 @@ class EditView(View):
         userProfile = UserProfile.objects.get(user = user)
         print(userProfile.location)
         if request.method == 'POST':
-            form = UpdateProfileForm(request.POST, instance = userProfile)
+            form = UpdateProfileForm(request.POST, request.FILES, instance = userProfile)
             print(userProfile)
             if form.is_valid():
                 print("yes")
+                form.save()
                 location = form.cleaned_data['location']
                 qualifications = form.cleaned_data['qualifications']
                 image = request.FILES['image']
@@ -207,18 +235,20 @@ class ProfileView(View):
         except UserProfile.DoesNotExist:
             print("2")
             exist = False
-            form = UpdateProfileForm(request.POST)
+            form = UpdateProfileForm(request.POST, request.FILES)
             context = {
                 'exist':exist,
                 'form':form,
                 'userTypes':userTypes,
             }
             if form.is_valid():
+                form.save()
                 print("3")
                 exist = True
                 location = form.cleaned_data['location']
                 qualifications = form.cleaned_data['qualifications']
-                userProfile = UserProfile(location = location, qualifications = qualifications)
+                image = request.FILES['image']
+                userProfile = UserProfile(location = location, qualifications = qualifications, image = image)
                 userProfile.user = request.user
                 userProfile.save()
                 context["userProfile"] = userProfile
@@ -241,7 +271,7 @@ class LogsView(View):
             form = AuthenticationForm()
         allTypes = Type.objects.all()
         context = {
-        'allTypes': allTypes
+            'allTypes': allTypes
         }
         return render(request, 'polls/logs.html', context)
     def get(self, request, username):
@@ -252,8 +282,10 @@ class CreateRate(View):
     def get(self, request, username):
         return render(request, 'polls/unauthorized.html')
     def post(self, request, username):
+        form = CreatePostForm()
         allTypes = Type.objects.all()
         context = {
+            'form':form,
             'allTypes':allTypes,
         }
         print(allTypes)
@@ -264,21 +296,34 @@ class SaveRate(View):
     def get(self, request, username):
         return render(request, 'polls/unauthorized.html')
     def post(self, request, username):
-        pprint(request.POST)
-        foodName = request.POST['foodName']
-        foodType = request.POST['foodType']
-        foodRate = request.POST['foodRate']
-        foodComment = request.POST['foodComment']
-        newPost = Type(foodName = foodName, foodType = foodType, foodRate = foodRate, foodComment = foodComment)
-        newPost.foodPost = request.user
-        newPost.save()
         allTypes = Type.objects.all()
+        if request.method == 'POST':
+            form = CreatePostForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                foodName = form.cleaned_data['foodName']
+                foodType = form.cleaned_data['foodType']
+                foodRate = form.cleaned_data['foodRate']
+                foodComment = form.cleaned_data['foodComment']
+                foodImage = request.FILES['foodImage']
+                newPost = Type(foodName = foodName, foodType = foodType, foodRate = foodRate, foodComment = foodComment, foodImage = foodImage)
+                newPost.foodPost = request.user
+                newPost.save()
+                allTypes = Type.objects.all()
+                context = {
+                    'allTypes':allTypes,
+                    'form':form,
+                }
+                return render(request, 'polls/logs.html', context)
+        else:
+            form = CreatePostForm()
+
         context = {
+            'form':form,
             'allTypes':allTypes,
         }
+        return render(request, 'polls/editProfile.html', context)
 
-        print(newPost.foodPost)
-        return render(request, 'polls/logs.html', context)
 
 
 class IndexView(View):

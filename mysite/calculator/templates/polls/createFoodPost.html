@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel = "stylesheet" href = "styles.css" />
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -11,43 +12,14 @@
 <body>
   <h3>Create Rating</h3>
 
-  <form method = 'post' action="{% url 'save' user.username %}">
+  <form method = 'post' action="{% url 'save' user.username %}" enctype="multipart/form-data">
     {% csrf_token %}
-    <label for = 'foodName'>Name of Food</label>
-    <input type = 'text' id = 'foodName' name = 'foodName'>
-    <br>
-    <label for = 'foodType'>Type of Food</label>
-    <select name="foodType" id="foodType">
-      <option value="dessert">Dessert</option>
-      <option value="main course">Main Course</option>
-      <option value="appetizer">Appetizer</option>
-    </select>
-    <br>
-    <label for = 'foodRate'>Rating</label>
-    <select name="foodRate" id="foodRate">
-      <option value="one">One Star</option>
-      <option value="two">Two Stars</option>
-      <option value="three">Three Stars</option>
-      <option value="four">Four Stars</option>
-      <option value="five">Five Stars</option>
-      <option value="six">Six Stars</option>
-      <option value="seven">Seven Stars</option>
-      <option value="eight">Eight Stars</option>
-      <option value="nine">Nine Stars</option>
-      <option value="ten">Ten Stars</option>
-    </select>
-    <br>
-    <label for = 'foodComment'>Detailed Review</label>
-    <textarea name="foodComment" id = 'foodComment' cols="40" rows="5"></textarea>
-    <div class = "field">
-      <div class = "control">
-        <button type = 'submit'>Submit New Rating</button>
-      </div>
+    <img src="{{ type.foodImage.url }}">
+    {{ form.as_p }}
+    <div class = "control">
+      <button type = 'submit'>Submit New Rating</button>
     </div>
-  </form>
-  <form method = 'post' action = "{% url 'logs' user.username %}">
-    {% csrf_token %}
-    <button type = 'submit'>Back</button>
+  
   </form>
 </body>
 

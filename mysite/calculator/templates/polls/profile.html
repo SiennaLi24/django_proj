@@ -2,6 +2,7 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel = "stylesheet" href = "styles.css" />
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -11,20 +12,18 @@
 <body>
   <h3>User Profile for {{user.username}}</h3>
   {% if exist or submitted %}
-  <h5>User</h5>
+  <img class="rounded-circle account-img" src="{{ userProfile.image.url }}">
     <ul>
       <li>
-        <img class="rounded-circle account-img" src="{{ userProfile.image.url }}">
-      </li>
-      <li>
+        <h5>User: </h5>
         {{userProfile.user}}
       </li>
       <li>
-        <h5>Location</h5>
+        <h5>Location: </h5>
         {{userProfile.location}}
       </li>
       <li>
-        <h5>Qualifications</h5>
+        <h5>Qualifications: </h5>
         {{userProfile.qualifications}}
       </li>
       <li>
@@ -53,7 +52,7 @@
     </ul>
 
   {% else %}
-    <form method = 'post' action="{% url 'profile' user.username %}">
+    <form method = 'post' action="{% url 'profile' user.username %}" enctype = "multipart/form-data">
       {% csrf_token %}
       {{ form.as_p }}
       <div class = "control">

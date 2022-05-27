@@ -2,25 +2,31 @@
 <html>
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel = "stylesheet" href = "styles.css" />
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
    <title>Calculator</title>
+
   </head>
 
 <body>
-  <ul> {% for type in allTypes %}  
+  <ul> {% for type in allTypes %}
     <li>
       {{type.foodName}}
     </li>
     <li>
       {{type.foodRate}}
+      <p>out of 10</p>
+
     </li>
     <li>
       <form method = 'post' action = "{% url 'detail' type.id %}">
         {% csrf_token %}
         <button type = 'submit'>View</button>
       </form>
+      <br>
+      <br>
     </li>
     {% endfor %}
   </ul>

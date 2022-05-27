@@ -16,6 +16,7 @@
   </form>
   <form method = 'post' action = "{% url 'detail' type.id %}">
     {% csrf_token %}
+    <img src="{{ type.foodImage.url }}">
     <ul>
       <li>
         {{type.foodName}}
